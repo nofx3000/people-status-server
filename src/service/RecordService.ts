@@ -2,7 +2,8 @@ import seq from "../db/seq";
 class RecordService {
   static RecordService: RecordService = new RecordService();
   private Record = seq.models.Record;
-  private Phase = seq.models.Phase;
+  private Problem = seq.models.Problem;
+  private People = seq.models.People;
   async findRecordsByPersonId(id: number) {
     return this.Record.findAll({
       where: {
@@ -24,12 +25,10 @@ class RecordService {
       // duration: data.duration,
     });
   }
-  async updateRecord(data: any) {
+  async updateRecord(data: RecordInter) {
     return this.Record.update(
       {
-        person_id: data.person_id,
-        discount: data.discount,
-        duration: data.duration,
+        ...data,
       },
       {
         where: {
@@ -43,9 +42,7 @@ class RecordService {
       where: {
         id,
       },
-      include: {
-        model: this.Phase,
-      },
+      include: [this.Problem, this.People],
     });
   }
   async destroyRecord(id: number) {

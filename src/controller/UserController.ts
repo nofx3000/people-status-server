@@ -12,11 +12,12 @@ class UserController {
         return new ErrorModel("not found");
       }
       const { dataValues } = userinfo;
-      let token: any;
-      token = jwt.sign(dataValues, SECRET_KEY, {
-        expiresIn: "24h",
-      });
-      return new SuccessModel(token);
+      return new SuccessModel(dataValues);
+      // let token: any;
+      // token = jwt.sign(dataValues, SECRET_KEY, {
+      //   expiresIn: "24h",
+      // });
+      // return new SuccessModel(token);
     } catch (error) {
       return new ErrorModel((error as any).toString());
     }

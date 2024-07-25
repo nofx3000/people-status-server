@@ -29,14 +29,22 @@ class RecordController {
       return new ErrorModel("添加record失败");
     }
   }
-  async editRecord(data: any) {
+  async editRecord(data: RecordInter) {
     try {
+      const result = await RecordService.updateRecord(data);
+      if (result) {
+        return new SuccessModel(result);
+      }
     } catch (error) {
       return new ErrorModel("修改记录失败");
     }
   }
   async deleteRecord(id: number) {
     try {
+      const result = await RecordService.destroyRecord(id);
+      if (result) {
+        return new SuccessModel(result);
+      }
     } catch (error) {
       return new ErrorModel("删除记录失败");
     }

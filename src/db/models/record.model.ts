@@ -27,6 +27,9 @@ export default class Record extends Model {
   @Column
   person_id!: number;
 
+  @BelongsTo(() => Problem)
+  problem!: Problem;
+
   @ForeignKey(() => Problem)
   @Column
   problem_id!: number;

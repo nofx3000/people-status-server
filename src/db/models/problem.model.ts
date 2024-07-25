@@ -1,4 +1,5 @@
-import { Table, Column, Model } from "sequelize-typescript";
+import { Table, Column, Model, BelongsTo } from "sequelize-typescript";
+import Record from "./record.model";
 
 @Table({
   timestamps: false,
