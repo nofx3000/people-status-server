@@ -26,6 +26,9 @@ export default class People extends Model {
   })
   married!: boolean;
 
+  @Column
+  avatar!: string;
+
   @ForeignKey(() => Unit)
   @Column
   unit_id!: number;

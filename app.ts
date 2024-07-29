@@ -17,6 +17,7 @@ import menu from "./src/routes/menu";
 import people from "./src/routes/people";
 import record from "./src/routes/record";
 import problem from "./src/routes/problem";
+import upload from "./src/routes/upload";
 
 // app.use(
 //   jwtKoa({
@@ -75,6 +76,8 @@ app.use(record.routes());
 app.use(record.allowedMethods());
 app.use(problem.routes());
 app.use(problem.allowedMethods());
+app.use(upload.routes());
+app.use(upload.allowedMethods());
 
 // error-handling
 app.on("error", (err: Error, ctx: Context) => {
