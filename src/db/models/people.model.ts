@@ -33,6 +33,6 @@ export default class People extends Model {
   @BelongsTo(() => Unit)
   unit!: Unit;
 
-  @HasMany(() => Record)
+  @HasMany(() => Record, { as: "records", foreignKey: "person_id" })
   record!: Record[];
 }

@@ -11,14 +11,14 @@ interface RecordInter {
 interface PersonInfoInter {
   id?: number;
   name?: string;
-  catatory?: number;
+  catagory?: number;
   unit_id?: number;
   married?: boolean;
   comment?: string;
   records?: RecordInter[];
 }
 
-interface ProblemInfoInter {
+interface ProblemInter {
   id?: number;
   name?: string;
 }

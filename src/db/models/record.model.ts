@@ -9,7 +9,7 @@ import People from "./people.model";
 import Problem from "./problem.model";
 
 @Table({
-  timestamps: false,
+  timestamps: true,
 })
 export default class Record extends Model {
   @Column({
@@ -20,8 +20,8 @@ export default class Record extends Model {
   @Column
   risk_level!: number;
 
-  @BelongsTo(() => People)
-  people!: People;
+  @BelongsTo(() => People, { foreignKey: "person_id", as: "person" })
+  person!: People;
 
   @ForeignKey(() => People)
   @Column
@@ -41,7 +41,10 @@ export default class Record extends Model {
 
   @ForeignKey(() => People)
   @Column
-  responsible!: number;
+  responsible_id!: number;
+
+  @BelongsTo(() => People, { foreignKey: "responsible_id", as: "responsible" })
+  responsible!: People;
 
   @Column({
     defaultValue: "无",

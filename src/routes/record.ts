@@ -11,6 +11,10 @@ router.get("/person/:id", async (ctx: Context) => {
   const id = ctx.params.id;
   ctx.body = await RecordController.getRecordByPersonId(id);
 });
+router.get("/unit/:id", async (ctx: Context) => {
+  const id = ctx.params.id;
+  ctx.body = await RecordController.getRecordByUnitId(id);
+});
 //--pass--
 router.get("/:id", async (ctx: Context) => {
   const id = ctx.params.id;

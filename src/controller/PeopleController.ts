@@ -4,10 +4,11 @@ import { SuccessModel, ErrorModel, BaseModel } from "../resmodel/ResModel";
 
 class PeopleController {
   static PeopleController: PeopleController = new PeopleController();
-  async getAllPeopleInfoByUnit(): Promise<BaseModel> {
+  async getPeopleInfoByUnit(unitId: number): Promise<BaseModel> {
     try {
-      const peopleInfoByUnit = await UnitService.findPeopleByUnit();
-      return new SuccessModel(peopleInfoByUnit);
+      const peopleInfoByUnit = await UnitService.findPeopleByUnit(unitId);
+      console.log("peopleInfoByUnit", peopleInfoByUnit[0].dataValues.people);
+      return new SuccessModel(peopleInfoByUnit[0].dataValues.people);
     } catch (error) {
       console.error("-----", error);
       return new ErrorModel((error as any).toString());

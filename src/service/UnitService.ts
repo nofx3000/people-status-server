@@ -2,12 +2,11 @@ import seq from "../db/seq";
 class UnitService {
   static UnitService: UnitService = new UnitService();
   private Unit = seq.models.Unit;
-  async findPeopleByUnit() {
-    console.log("----------------", seq.models);
-    for (const model in seq.models) {
-      console.log(seq.models[model]);
-    }
+  async findPeopleByUnit(unitId: number) {
     return this.Unit.findAll({
+      where: {
+        id: unitId,
+      },
       include: [
         {
           model: seq.models.People,

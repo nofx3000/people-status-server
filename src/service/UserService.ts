@@ -3,12 +3,12 @@ import seq from "../db/seq";
 class UserService {
   static UserService: UserService = new UserService();
   private User = seq.models.User;
+
   async findUser(logininfo: any) {
     const { username, password } = logininfo;
     let res;
     try {
       res = await this.User.findOne({
-        attributes: ["id", "username", "role"],
         where: {
           username,
           password,

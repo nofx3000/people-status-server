@@ -1,4 +1,11 @@
-import { Table, Column, Model } from "sequelize-typescript";
+import {
+  Table,
+  Column,
+  Model,
+  ForeignKey,
+  BelongsTo,
+} from "sequelize-typescript";
+import Unit from "./unit.model";
 
 @Table({
   timestamps: false,
@@ -13,6 +20,13 @@ export default class User extends Model {
     allowNull: false,
   })
   password!: string;
+
+  @ForeignKey(() => Unit)
+  @Column
+  unit_id!: number;
+
+  @BelongsTo(() => Unit)
+  unit!: Unit;
 
   @Column({
     defaultValue: "user",

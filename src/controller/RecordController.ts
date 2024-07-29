@@ -10,6 +10,36 @@ class RecordController {
       return new ErrorModel("not found");
     }
   }
+  async getRecordByUnitId(id: number) {
+    const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
+    const peopleList: PersonInfoInter[] = rawPeopleList.map(
+      (raw: any) => raw.dataValues
+    );
+    if (peopleList) {
+      const uniqueRecords = this.removeDuplicateRecords(peopleList);
+      return new SuccessModel(uniqueRecords);
+    } else {
+      return new ErrorModel("not found");
+    }
+  }
+
+  // 对menuList进行调整，如果每个person中的record具有多个相同problem的记录，则每个problem只保留一条记录
+  private removeDuplicateRecords(people: PersonInfoInter[]) {
+    for (const person of people) {
+      const uniqueRecords: PersonInfoInter[] = [];
+      const uniqueProblems: Set<string> = new Set();
+      // records数组已经是时间降序
+      person.records?.forEach((record: RecordInter) => {
+        if (!uniqueProblems.has((record as any).problem_id)) {
+          uniqueRecords.push(record);
+          uniqueProblems.add((record as any).problem_id);
+        }
+      });
+      person.records = uniqueRecords;
+    }
+    return people;
+  }
+
   async getRecordId(id: number) {
     const record = await RecordService.findOneRecordById(id);
     if (record) {
