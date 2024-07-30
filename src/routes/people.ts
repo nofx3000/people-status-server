@@ -32,7 +32,7 @@ router.put("/edit", async (ctx: Context) => {
   ctx.body = res;
 });
 
-router.get("/:id", async (ctx: Context) => {
+router.get("/person/:id", async (ctx: Context) => {
   const id = ctx.params.id;
   const res = await PeopleController.getPersonInfo(id);
   ctx.body = res;

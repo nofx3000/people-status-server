@@ -21,6 +21,7 @@ interface PersonInfoInter {
 interface ProblemInter {
   id?: number;
   name?: string;
+  record?: RecordInter[];
 }
 
 interface UserInfoInter {
@@ -32,4 +33,8 @@ interface UserInfoInter {
 interface LoginInter {
   username: string;
   password: string;
+}
+
+interface UnitInter {
+  name: string;
 }

@@ -1,4 +1,4 @@
-import { Table, Column, Model, BelongsTo } from "sequelize-typescript";
+import { Table, Column, Model, HasMany } from "sequelize-typescript";
 import Record from "./record.model";
 
 @Table({
@@ -9,4 +9,7 @@ export default class Problem extends Model {
     allowNull: false,
   })
   name!: string;
+
+  @HasMany(() => Record)
+  record!: Record[];
 }

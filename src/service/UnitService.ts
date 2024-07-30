@@ -2,6 +2,9 @@ import seq from "../db/seq";
 class UnitService {
   static UnitService: UnitService = new UnitService();
   private Unit = seq.models.Unit;
+  async findAllUnits() {
+    return this.Unit.findAll();
+  }
   async findPeopleByUnit(unitId: number) {
     return this.Unit.findAll({
       where: {

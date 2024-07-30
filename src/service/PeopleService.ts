@@ -1,7 +1,10 @@
 import seq from "../db/seq";
 class PeopleService {
   static PeopleService: PeopleService = new PeopleService();
+  private Record = seq.models.Record;
+  private Problem = seq.models.Problem;
   private People = seq.models.People;
+  private Unit = seq.models.Unit;
   async createOnePerson(personInfo: any) {
     const res = await this.People.create(personInfo as any);
     return res;
@@ -26,6 +29,27 @@ class PeopleService {
       where: {
         id,
       },
+      include: [
+        { model: this.Unit },
+        {
+          model: this.Record,
+          as: "records",
+          include: [
+            {
+              model: this.Problem,
+              as: "problem",
+            },
+            {
+              model: this.People,
+              as: "responsible",
+            },
+          ],
+        },
+      ],
+      order: [
+        ["records", "problem", "id", "ASC"],
+        ["records", "updatedAt", "DESC"],
+      ],
     });
   }
   async findAllPeopleInfo() {

@@ -18,6 +18,8 @@ import people from "./src/routes/people";
 import record from "./src/routes/record";
 import problem from "./src/routes/problem";
 import upload from "./src/routes/upload";
+import unit from "./src/routes/unit";
+import summary from "./src/routes/summary";
 
 // app.use(
 //   jwtKoa({
@@ -78,6 +80,10 @@ app.use(problem.routes());
 app.use(problem.allowedMethods());
 app.use(upload.routes());
 app.use(upload.allowedMethods());
+app.use(unit.routes());
+app.use(unit.allowedMethods());
+app.use(summary.routes());
+app.use(summary.allowedMethods());
 
 // error-handling
 app.on("error", (err: Error, ctx: Context) => {
