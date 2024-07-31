@@ -10,6 +10,7 @@ class RecordController {
       return new ErrorModel("not found");
     }
   }
+  // 对record进行去重，每个人只保留最新的一条记录
   async getRecordByUnitId(id: number) {
     const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
     const peopleList: PersonInfoInter[] = rawPeopleList.map(
@@ -18,6 +19,18 @@ class RecordController {
     if (peopleList) {
       const uniqueRecords = this.removeDuplicateRecords(peopleList);
       return new SuccessModel(uniqueRecords);
+    } else {
+      return new ErrorModel("not found");
+    }
+  }
+  // 不对record进行去重，每个人只保留最所有记录
+  async getRecordByUnitIdNofix(id: number) {
+    const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
+    const peopleList: PersonInfoInter[] = rawPeopleList.map(
+      (raw: any) => raw.dataValues
+    );
+    if (peopleList) {
+      return new SuccessModel(peopleList);
     } else {
       return new ErrorModel("not found");
     }

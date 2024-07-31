@@ -15,6 +15,11 @@ router.get("/unit/:id", async (ctx: Context) => {
   const id = ctx.params.id;
   ctx.body = await RecordController.getRecordByUnitId(id);
 });
+router.get("/unit/nofix/:id", async (ctx: Context) => {
+  const id = ctx.params.id;
+  ctx.body = await RecordController.getRecordByUnitIdNofix(id);
+});
+
 //--pass--
 router.get("/:id", async (ctx: Context) => {
   const id = ctx.params.id;
