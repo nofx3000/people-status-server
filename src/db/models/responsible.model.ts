@@ -8,24 +8,19 @@ import {
 } from "sequelize-typescript";
 import Unit from "./unit.model";
 import Record from "./record.model";
-import Responsible from "./responsible.model";
+import People from "./people.model";
 
 @Table({
   timestamps: false,
 })
-export default class People extends Model {
+export default class Responsible extends Model {
   @Column({
     allowNull: false,
   })
   name!: string;
 
   @Column
-  catagory!: number;
-
-  @Column({
-    defaultValue: true,
-  })
-  married!: boolean;
+  description!: string;
 
   @Column
   avatar!: string;
@@ -37,13 +32,6 @@ export default class People extends Model {
   @BelongsTo(() => Unit)
   unit!: Unit;
 
-  @HasMany(() => Record)
-  records!: Record[];
-
-  @ForeignKey(() => Responsible)
-  @Column
-  responsible_id!: number;
-
-  @BelongsTo(() => Responsible)
-  responsible!: Responsible;
+  @HasMany(() => People)
+  people!: People[];
 }

@@ -14,11 +14,8 @@ class UserService {
           password,
         },
       });
-      console.log("++++++++++++++++++++", res);
       return res;
-    } catch (err) {
-      console.log("++++++++++++++++++++", err);
-    }
+    } catch (err) {}
   }
   async createUser(userinfo: any) {
     return await this.User.create(userinfo as any);

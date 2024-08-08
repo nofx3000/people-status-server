@@ -26,9 +26,10 @@ router.del("/del/:id", async (ctx: Context) => {
   ctx.body = await PeopleController.delOnePerson(id);
 });
 
-router.put("/edit", async (ctx: Context) => {
+router.put("/edit/:id", async (ctx: Context) => {
+  const id = ctx.params.id;
   const personInfo: PersonInfoInter = ctx.request.body as any;
-  const res = await PeopleController.editOnePerson(personInfo);
+  const res = await PeopleController.editOnePerson(id, personInfo);
   ctx.body = res;
 });
 

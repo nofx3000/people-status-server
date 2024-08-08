@@ -2,9 +2,11 @@ import seq from "../db/seq";
 class PeopleService {
   static PeopleService: PeopleService = new PeopleService();
   private Record = seq.models.Record;
-  private Problem = seq.models.Problem;
+  private RecordDevelopment = seq.models.RecordDevelopment;
   private People = seq.models.People;
   private Unit = seq.models.Unit;
+  private Problem = seq.models.Problem;
+  private Responsible = seq.models.Responsible;
   async createOnePerson(personInfo: any) {
     const res = await this.People.create(personInfo as any);
     return res;
@@ -16,10 +18,10 @@ class PeopleService {
       },
     });
   }
-  async updateOnePerson(personInfo: any) {
+  async updateOnePerson(id: number, personInfo: any) {
     const res = await this.People.update(personInfo as any, {
       where: {
-        id: personInfo.id,
+        id: id,
       },
     });
     return res;
@@ -31,24 +33,16 @@ class PeopleService {
       },
       include: [
         { model: this.Unit },
+        { model: this.Responsible },
         {
           model: this.Record,
-          as: "records",
           include: [
+            { model: this.Problem },
             {
-              model: this.Problem,
-              as: "problem",
-            },
-            {
-              model: this.People,
-              as: "responsible",
+              model: this.RecordDevelopment,
             },
           ],
         },
-      ],
-      order: [
-        ["records", "problem", "id", "ASC"],
-        ["records", "updatedAt", "DESC"],
       ],
     });
   }

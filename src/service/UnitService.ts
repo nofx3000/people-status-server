@@ -1,3 +1,4 @@
+import { includes } from "lodash";
 import seq from "../db/seq";
 class UnitService {
   static UnitService: UnitService = new UnitService();
@@ -13,6 +14,25 @@ class UnitService {
       include: [
         {
           model: seq.models.People,
+          include: [
+            {
+              model: seq.models.Unit,
+            },
+            {
+              model: seq.models.Responsible,
+            },
+            {
+              model: seq.models.Record,
+              include: [
+                {
+                  model: seq.models.Problem,
+                },
+                {
+                  model: seq.models.RecordDevelopment,
+                },
+              ],
+            },
+          ],
         },
       ],
     });

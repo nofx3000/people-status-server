@@ -20,6 +20,8 @@ import problem from "./src/routes/problem";
 import upload from "./src/routes/upload";
 import unit from "./src/routes/unit";
 import summary from "./src/routes/summary";
+import responsible from "./src/routes/responsible";
+import record_development from "./src/routes/record_development";
 
 // app.use(
 //   jwtKoa({
@@ -84,6 +86,10 @@ app.use(unit.routes());
 app.use(unit.allowedMethods());
 app.use(summary.routes());
 app.use(summary.allowedMethods());
+app.use(responsible.routes());
+app.use(responsible.allowedMethods());
+app.use(record_development.routes());
+app.use(record_development.allowedMethods());
 
 // error-handling
 app.on("error", (err: Error, ctx: Context) => {

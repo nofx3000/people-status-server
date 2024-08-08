@@ -4,6 +4,8 @@ import People from "./people.model";
 import Record from "./record.model";
 import User from "./user.model";
 import Problem from "./problem.model";
+import Responsible from "./responsible.model";
+import RecordDevelopment from "./record_development.model";
 
 export default {
   Menu,
@@ -12,4 +14,6 @@ export default {
   Record,
   User,
   Problem,
+  Responsible,
+  RecordDevelopment,
 };

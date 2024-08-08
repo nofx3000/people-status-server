@@ -30,9 +30,9 @@ class PeopleController {
       return new ErrorModel((error as any).toString());
     }
   }
-  async editOnePerson(personInfo: any): Promise<BaseModel> {
+  async editOnePerson(id: number, personInfo: any): Promise<BaseModel> {
     try {
-      const res = await PeopleService.updateOnePerson(personInfo);
+      const res = await PeopleService.updateOnePerson(id, personInfo);
       return new SuccessModel(res);
     } catch (error) {
       return new ErrorModel((error as any).toString());

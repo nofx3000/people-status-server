@@ -1,4 +1,4 @@
-import { Table, Column, Model } from "sequelize-typescript";
+import { Table, Column, Model, HasMany, BelongsTo } from "sequelize-typescript";
 
 @Table({
   timestamps: false,
@@ -17,9 +17,17 @@ export default class Menu extends Model {
   })
   icon!: string;
 
-  @Column
+  @Column({
+    defaultValue: "Menu",
+  })
   type!: string;
 
   @Column
-  children!: string;
+  parent_id!: number;
+
+  // @BelongsTo(() => Menu, { foreignKey: "parent_id" })
+  // parent!: Menu;
+
+  @HasMany(() => Menu, { as: "children", foreignKey: "parent_id" })
+  children?: Menu[];
 }

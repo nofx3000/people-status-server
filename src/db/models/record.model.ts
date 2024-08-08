@@ -4,23 +4,17 @@ import {
   Model,
   BelongsTo,
   ForeignKey,
+  HasMany,
 } from "sequelize-typescript";
 import People from "./people.model";
 import Problem from "./problem.model";
+import RecordDevelopment from "./record_development.model";
 
 @Table({
   timestamps: true,
 })
 export default class Record extends Model {
-  @Column({
-    defaultValue: "无",
-  })
-  detail!: string;
-
-  @Column
-  risk_level!: number;
-
-  @BelongsTo(() => People, { foreignKey: "person_id", as: "person" })
+  @BelongsTo(() => People)
   person!: People;
 
   @ForeignKey(() => People)
@@ -34,20 +28,11 @@ export default class Record extends Model {
   @Column
   problem_id!: number;
 
-  @Column({
-    defaultValue: "无",
-  })
-  measure!: string;
-
-  @ForeignKey(() => People)
-  @Column
-  responsible_id!: number;
-
-  @BelongsTo(() => People, { foreignKey: "responsible_id", as: "responsible" })
-  responsible!: People;
+  @HasMany(() => RecordDevelopment)
+  record_Developments!: RecordDevelopment[];
 
   @Column({
-    defaultValue: "无",
+    defaultValue: false,
   })
-  comment!: string;
+  is_closed!: boolean;
 }
