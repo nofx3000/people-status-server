@@ -1,39 +1,43 @@
 import SummaryService from "../service/SummaryService";
 import { SuccessModel, ErrorModel } from "../resmodel/ResModel";
+import dateFormat from "dateformat";
 class SummaryController {
   static SummaryController: SummaryController = new SummaryController();
   async getRadar(unitId: number) {
     try {
-      const rawProblemList: any =
-        await SummaryService.findNumberOfPeopleOfEachProblem(unitId);
-      const problemList: ProblemInter[] = rawProblemList.map(
-        (raw: any) => raw.dataValues
-      );
-      if (problemList) {
-        const uniqueProblems = this.removeDuplicatePerson(problemList);
-        return new SuccessModel(uniqueProblems);
-      } else {
-        return new ErrorModel("not found");
-      }
-    } catch (err) {
-      return new ErrorModel((err as Error).toString());
+      const thisMonthproblemList =
+        await SummaryService.findNumberOfPeopleOfEachProblem(
+          unitId,
+          new Date().getMonth() + 1
+        );
+      const lastMonthproblemList =
+        await SummaryService.findNumberOfPeopleOfEachProblem(
+          unitId,
+          new Date().getMonth()
+        );
+
+      return new SuccessModel({
+        thisMonth: thisMonthproblemList,
+        lastMonth: lastMonthproblemList,
+      });
+    } catch (error) {
+      return new ErrorModel((error as Error).toString());
     }
   }
 
-  private removeDuplicatePerson(problems: ProblemInter[]) {
-    for (const problem of problems) {
-      const uniqueRecords: RecordInter[] = [];
-      const uniquePerson: Set<string> = new Set();
-      // records数组已经是时间降序
-      problem.record?.forEach((record: RecordInter) => {
-        if (!uniquePerson.has((record as any).person_id)) {
-          uniqueRecords.push(record);
-          uniquePerson.add((record as any).person_id);
-        }
+  async getLine(unitId: number, month: number) {
+    try {
+      const res = await SummaryService.findLastestRecordDevelopmentMonthly(
+        unitId,
+        month
+      );
+      const _res = (res as RecordInter[]).filter((res) => {
+        return res.record_Developments && res.record_Developments.length > 0;
       });
-      problem.record = uniqueRecords;
+      return new SuccessModel(_res);
+    } catch (error) {
+      return new ErrorModel((error as Error).toString());
     }
-    return problems;
   }
 }
 

@@ -1,5 +1,6 @@
 import { Table, Column, Model, HasMany } from "sequelize-typescript";
 import People from "./people.model";
+import User from "./user.model";
 
 @Table({
   timestamps: false,
@@ -10,6 +11,15 @@ export default class Unit extends Model {
   })
   name!: string;
 
+  @Column({
+    allowNull: false,
+    defaultValue: false,
+  })
+  isCommand!: boolean;
+
   @HasMany(() => People)
   people!: People[];
+
+  @HasMany(() => User)
+  user!: User;
 }

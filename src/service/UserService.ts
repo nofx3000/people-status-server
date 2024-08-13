@@ -13,6 +13,11 @@ class UserService {
           username,
           password,
         },
+        include: [
+          {
+            model: seq.models.Unit,
+          },
+        ],
       });
       return res;
     } catch (err) {}

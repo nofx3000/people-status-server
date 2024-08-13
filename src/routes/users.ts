@@ -9,7 +9,6 @@ router.prefix("/api/users");
 
 router.post("/login", async (ctx: Context) => {
   const { username, password } = ctx.request.body as any;
-  console.log("resquestBody in users route:", ctx.request.body);
   const res = await UserController.login({ username, password });
   if (res instanceof ErrorModel) {
     ctx.status = 401;
@@ -20,7 +19,6 @@ router.post("/login", async (ctx: Context) => {
 router.get("/verify1", async (ctx: Context) => {
   const token = ctx.header.authorization;
   if (!token) {
-    console.log("untoken");
     ctx.status = 401;
     ctx.body = new ErrorModel(401, "no token");
     return;

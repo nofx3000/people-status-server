@@ -12,13 +12,4 @@ router.get("/", async (ctx: Context, next: Next) => {
   };
 });
 
-router.get("/all", async (ctx: Context, next: Next) => {
-  try {
-    const res = await UnitService.findAllByUnit();
-    ctx.body = new SuccessModel(res);
-  } catch (error) {
-    ctx.body = new ErrorModel("failed to get all info");
-  }
-});
-
 export default router;

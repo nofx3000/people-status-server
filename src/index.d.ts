@@ -56,6 +56,8 @@ interface UserInfoInter {
   username: string;
   password: string;
   role?: "admin" | "user";
+  unit_id?: number;
+  unit?: UnitInter;
 }
 
 interface LoginInter {

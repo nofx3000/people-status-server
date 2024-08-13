@@ -32,17 +32,26 @@ class ResponsibleService {
   }
 
   async findResponsibleByUnitId(unitid: number) {
-    return await this.Responsible.findAll({
-      where: {
-        unit_id: unitid,
-      },
+    const includeQuery = {
       include: [
         { model: this.Unit },
         {
           model: this.People,
         },
       ],
-    });
+    };
+    const whereQuery = {
+      where: {
+        unit_id: unitid,
+      },
+    };
+    let query = {};
+    if (unitid == 0) {
+      query = includeQuery;
+    } else {
+      query = { ...includeQuery, ...whereQuery };
+    }
+    return await this.Responsible.findAll(query);
   }
 
   async createOneResponsible(responsibleInfo: any) {

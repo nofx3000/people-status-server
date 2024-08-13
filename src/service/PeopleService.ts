@@ -36,6 +36,7 @@ class PeopleService {
         { model: this.Responsible },
         {
           model: this.Record,
+
           include: [
             { model: this.Problem },
             {
@@ -44,7 +45,30 @@ class PeopleService {
           ],
         },
       ],
+      order: [
+        ["records", "updatedAt", "DESC"],
+        ["records", "record_Developments", "updatedAt", "DESC"],
+      ],
     });
+  }
+
+  async findPeopleByUnitId(unitId: string) {
+    let whereQuery = undefined;
+    if (unitId != "0") {
+      whereQuery = { id: unitId };
+    }
+
+    const query = {
+      include: [
+        { model: this.Unit, where: whereQuery },
+        {
+          model: this.Record,
+          include: [{ model: this.Problem }, { model: this.RecordDevelopment }],
+        },
+        { model: this.Responsible },
+      ],
+    };
+    return await this.People.findAll(query);
   }
   async findAllPeopleInfo() {
     return await this.People.findAll({

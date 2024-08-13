@@ -8,4 +8,11 @@ router.get("/radar/:unitId", async (ctx: Context) => {
   ctx.body = res;
 });
 
+router.get("/line/:unitId/:month", async (ctx: Context) => {
+  const month: number = ctx.params.month;
+  const unitId: number = ctx.params.unitId;
+  const res = await SummaryController.getLine(unitId, month);
+  ctx.body = res;
+});
+
 export default router;

@@ -4,13 +4,17 @@ import { SuccessModel, ErrorModel, BaseModel } from "../resmodel/ResModel";
 
 class PeopleController {
   static PeopleController: PeopleController = new PeopleController();
-  async getPeopleInfoByUnit(unitId: number): Promise<BaseModel> {
+  async getPeopleInfoByUnit(unitId: string): Promise<BaseModel> {
     try {
-      const peopleInfoByUnit = await UnitService.findPeopleByUnit(unitId);
-      console.log("peopleInfoByUnit", peopleInfoByUnit[0].dataValues.people);
-      return new SuccessModel(peopleInfoByUnit[0].dataValues.people);
+      // if (unitId == "0") {
+      //   const peopleInfoByUnit = await PeopleService.find
+      // } else {
+      //   const peopleInfoByUnit = await UnitService.findPeopleByUnit(unitId);
+      //   return new SuccessModel(peopleInfoByUnit[0].dataValues.people);
+      // }
+      const peopleInfoByUnit = await PeopleService.findPeopleByUnitId(unitId);
+      return new SuccessModel(peopleInfoByUnit);
     } catch (error) {
-      console.error("-----", error);
       return new ErrorModel((error as any).toString());
     }
   }
