@@ -63,6 +63,9 @@ class PeopleService {
         { model: this.Unit, where: whereQuery },
         {
           model: this.Record,
+          where: {
+            is_closed: false,
+          },
           include: [{ model: this.Problem }, { model: this.RecordDevelopment }],
         },
         { model: this.Responsible },
