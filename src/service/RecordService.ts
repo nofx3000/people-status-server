@@ -18,33 +18,73 @@ class RecordService {
       order: [["updatedAt", "DESC"]],
     });
   }
-  async findRecordsByUnitId(id: number) {
-    return this.People.findAll({
-      where: {
+  async findUnsolvedRecordsByUnitId(id: number) {
+    let whereQuery = undefined;
+    if (id != 0) {
+      whereQuery = {
         unit_id: id,
-      },
+      };
+    }
+    let query = {
       include: [
-        { model: this.Unit },
         {
-          model: this.Record,
-          as: "records",
-          include: [
-            {
-              model: this.Problem,
-              as: "problem",
-            },
-            {
-              model: this.People,
-              as: "responsible",
-            },
-          ],
+          model: this.People,
+          where: whereQuery,
         },
       ],
-      order: [
-        ["records", "problem", "id", "ASC"],
-        ["records", "updatedAt", "DESC"],
+      where: {
+        is_closed: false,
+      },
+    };
+
+    return await this.Record.findAll(query);
+    // return this.People.findAll({
+    //   where: {
+    //     unit_id: id,
+    //   },
+    //   include: [
+    //     { model: this.Unit },
+    //     {
+    //       model: this.Record,
+    //       as: "records",
+    //       include: [
+    //         {
+    //           model: this.Problem,
+    //           as: "problem",
+    //         },
+    //         {
+    //           model: this.People,
+    //           as: "responsible",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    //   order: [
+    //     ["records", "problem", "id", "ASC"],
+    //     ["records", "updatedAt", "DESC"],
+    //   ],
+    // });
+  }
+  async findSolvedRecordsByUnitId(id: number) {
+    let whereQuery = undefined;
+    if (id != 0) {
+      whereQuery = {
+        unit_id: id,
+      };
+    }
+    let query = {
+      include: [
+        {
+          model: this.People,
+          where: whereQuery,
+        },
       ],
-    });
+      where: {
+        is_closed: true,
+      },
+    };
+
+    return await this.Record.findAll(query);
   }
   async createRecord(data: RecordInter) {
     return this.Record.create({

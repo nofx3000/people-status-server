@@ -11,12 +11,17 @@ router.get("/person/:id", async (ctx: Context) => {
 });
 router.get("/unit/:id", async (ctx: Context) => {
   const id = ctx.params.id;
-  ctx.body = await RecordController.getRecordByUnitId(id);
+  ctx.body = await RecordController.getUnsolovedRecordByUnitId(id);
 });
-router.get("/unit/nofix/:id", async (ctx: Context) => {
+
+router.get("/unit/:id/solved", async (ctx: Context) => {
   const id = ctx.params.id;
-  ctx.body = await RecordController.getRecordByUnitIdNofix(id);
+  ctx.body = await RecordController.getSolovedRecordByUnitId(id);
 });
+// router.get("/unit/nofix/:id", async (ctx: Context) => {
+//   const id = ctx.params.id;
+//   ctx.body = await RecordController.getRecordByUnitIdNofix(id);
+// });
 
 router.get("/:id", async (ctx: Context) => {
   const id = ctx.params.id;

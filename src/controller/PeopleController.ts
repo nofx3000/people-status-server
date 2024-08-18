@@ -12,12 +12,36 @@ class PeopleController {
       //   const peopleInfoByUnit = await UnitService.findPeopleByUnit(unitId);
       //   return new SuccessModel(peopleInfoByUnit[0].dataValues.people);
       // }
-      const peopleInfoByUnit = await PeopleService.findPeopleByUnitId(unitId);
-      return new SuccessModel(peopleInfoByUnit);
+      const peopleRecords = await PeopleService.findPeopleByUnitId(unitId);
+      console.log(
+        "peopleInfoByUnit",
+        peopleRecords.map((item) => item.dataValues)
+      );
+      const separatedPeopleRecords = this.separatePeopleRecords(peopleRecords);
+      return new SuccessModel(separatedPeopleRecords);
     } catch (error) {
       return new ErrorModel((error as any).toString());
     }
   }
+
+  private separatePeopleRecords(peopleRecords: any[]) {
+    const res: SeparatePeopleRecordsInter = {
+      peopleWithUnsolvedRecords: [],
+      peopleSolved: [],
+    };
+    const peopleList = peopleRecords.map(
+      (item: any) => item.dataValues
+    ) as PersonInfoInter[];
+    for (const person of peopleList) {
+      if (person.records?.every((record) => record.is_closed === true)) {
+        res.peopleSolved.push(person);
+      } else {
+        res.peopleWithUnsolvedRecords.push(person);
+      }
+    }
+    return res;
+  }
+
   async addOnePerson(personInfo: any): Promise<BaseModel> {
     try {
       const res = await PeopleService.createOnePerson(personInfo);
@@ -45,14 +69,6 @@ class PeopleController {
   async getPersonInfo(id: number): Promise<BaseModel> {
     try {
       const res = await PeopleService.findPersonById(id);
-      return new SuccessModel(res);
-    } catch (error) {
-      return new ErrorModel((error as any).toString());
-    }
-  }
-  async getPeopleInfoWithEverything(): Promise<BaseModel> {
-    try {
-      const res = await PeopleService.findAllPeopleInfo();
       return new SuccessModel(res);
     } catch (error) {
       return new ErrorModel((error as any).toString());

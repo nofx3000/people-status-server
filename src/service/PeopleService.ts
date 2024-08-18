@@ -46,6 +46,7 @@ class PeopleService {
         },
       ],
       order: [
+        ["records", "is_closed", "ASC"],
         ["records", "updatedAt", "DESC"],
         ["records", "record_Developments", "updatedAt", "DESC"],
       ],
@@ -63,32 +64,15 @@ class PeopleService {
         { model: this.Unit, where: whereQuery },
         {
           model: this.Record,
-          where: {
-            is_closed: false,
-          },
+          // where: {
+          //   is_closed: false,
+          // },
           include: [{ model: this.Problem }, { model: this.RecordDevelopment }],
         },
         { model: this.Responsible },
       ],
     };
     return await this.People.findAll(query);
-  }
-  async findAllPeopleInfo() {
-    return await this.People.findAll({
-      include: [
-        {
-          model: seq.models.Record,
-          include: [
-            {
-              model: seq.models.Phase,
-            },
-          ],
-        },
-        {
-          model: seq.models.Division,
-        },
-      ],
-    });
   }
 }
 

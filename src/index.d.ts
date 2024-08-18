@@ -79,3 +79,8 @@ interface MenuItemInter {
   parent_id?: string;
   children?: MenuItemInter[];
 }
+
+interface SeparatePeopleRecordsInter {
+  peopleWithUnsolvedRecords: PersonInfoInter[];
+  peopleSolved: PersonInfoInter[];
+}

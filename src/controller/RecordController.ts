@@ -10,48 +10,74 @@ class RecordController {
       return new ErrorModel("not found");
     }
   }
-  // 对record进行去重，每个人只保留最新的一条记录
-  async getRecordByUnitId(id: number) {
-    const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
-    const peopleList: PersonInfoInter[] = rawPeopleList.map(
-      (raw: any) => raw.dataValues
-    );
-    if (peopleList) {
-      const uniqueRecords = this.removeDuplicateRecords(peopleList);
-      return new SuccessModel(uniqueRecords);
-    } else {
-      return new ErrorModel("not found");
+
+  async getUnsolovedRecordByUnitId(id: number) {
+    try {
+      const res = await RecordService.findUnsolvedRecordsByUnitId(id);
+      if (res) {
+        return new SuccessModel(res);
+      } else {
+        return new ErrorModel("getUnsolovedRecordByUnitId not found");
+      }
+    } catch (error) {
+      return new ErrorModel(error as any);
     }
   }
-  // 不对record进行去重，每个人只保留最所有记录
-  async getRecordByUnitIdNofix(id: number) {
-    const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
-    const peopleList: PersonInfoInter[] = rawPeopleList.map(
-      (raw: any) => raw.dataValues
-    );
-    if (peopleList) {
-      return new SuccessModel(peopleList);
-    } else {
-      return new ErrorModel("not found");
+  async getSolovedRecordByUnitId(id: number) {
+    try {
+      const res = await RecordService.findSolvedRecordsByUnitId(id);
+      if (res) {
+        return new SuccessModel(res);
+      } else {
+        return new ErrorModel("getSolovedRecordByUnitId not found");
+      }
+    } catch (error) {
+      return new ErrorModel(error as any);
     }
   }
 
+  // 对record进行去重，每个人只保留最新的一条记录
+  // async getRecordByUnitId(id: number) {
+  //   const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
+  //   const peopleList: PersonInfoInter[] = rawPeopleList.map(
+  //     (raw: any) => raw.dataValues
+  //   );
+  //   if (peopleList) {
+  //     const uniqueRecords = this.removeDuplicateRecords(peopleList);
+  //     return new SuccessModel(uniqueRecords);
+  //   } else {
+  //     return new ErrorModel("not found");
+  //   }
+  // }
+  // 不对record进行去重，每个人只保留最所有记录
+  // async getRecordByUnitIdNofix(id: number) {
+  //   const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
+  //   const peopleList: PersonInfoInter[] = rawPeopleList.map(
+  //     (raw: any) => raw.dataValues
+  //   );
+  //   if (peopleList) {
+  //     return new SuccessModel(peopleList);
+  //   } else {
+  //     return new ErrorModel("not found");
+  //   }
+  // }
+
   // 对menuList进行调整，如果每个person中的record具有多个相同problem的记录，则每个problem只保留一条记录
-  private removeDuplicateRecords(people: PersonInfoInter[]) {
-    for (const person of people) {
-      const uniqueRecords: PersonInfoInter[] = [];
-      const uniqueProblems: Set<string> = new Set();
-      // records数组已经是时间降序
-      person.records?.forEach((record: RecordInter) => {
-        if (!uniqueProblems.has((record as any).problem_id)) {
-          uniqueRecords.push(record);
-          uniqueProblems.add((record as any).problem_id);
-        }
-      });
-      person.records = uniqueRecords;
-    }
-    return people;
-  }
+  // private removeDuplicateRecords(people: PersonInfoInter[]) {
+  //   for (const person of people) {
+  //     const uniqueRecords: PersonInfoInter[] = [];
+  //     const uniqueProblems: Set<string> = new Set();
+  //     // records数组已经是时间降序
+  //     person.records?.forEach((record: RecordInter) => {
+  //       if (!uniqueProblems.has((record as any).problem_id)) {
+  //         uniqueRecords.push(record);
+  //         uniqueProblems.add((record as any).problem_id);
+  //       }
+  //     });
+  //     person.records = uniqueRecords;
+  //   }
+  //   return people;
+  // }
 
   async getRecordId(id: number) {
     const record = await RecordService.findOneRecordById(id);

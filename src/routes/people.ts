@@ -5,11 +5,6 @@ const router = require("koa-router")();
 
 router.prefix("/api/people");
 
-router.get("/all", async (ctx: Context) => {
-  const res = await PeopleController.getPeopleInfoWithEverything();
-  ctx.body = res;
-});
-
 router.get("/:unitId", async (ctx: Context) => {
   const unitId = ctx.params.unitId;
   ctx.body = await PeopleController.getPeopleInfoByUnit(unitId);
