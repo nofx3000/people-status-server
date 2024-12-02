@@ -1,4 +1,6 @@
 import seq from "../db/seq";
+import { Op } from "sequelize";
+
 class PeopleService {
   static PeopleService: PeopleService = new PeopleService();
   private Record = seq.models.Record;
@@ -73,6 +75,24 @@ class PeopleService {
       ],
     };
     return await this.People.findAll(query);
+  }
+
+  async findPeopleUpdatedAfter(lastLogin: Date) {
+    return await this.People.findAll({
+      where: {
+        updatedAt: {
+          [Op.gt]: lastLogin,
+        },
+      },
+      include: [
+        { model: this.Unit },
+        { model: this.Responsible },
+        {
+          model: this.Record,
+          include: [{ model: this.Problem }, { model: this.RecordDevelopment }],
+        },
+      ],
+    });
   }
 }
 

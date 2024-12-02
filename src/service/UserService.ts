@@ -1,4 +1,5 @@
 import seq from "../db/seq";
+import { Model } from "sequelize-typescript";
 
 class UserService {
   static UserService: UserService = new UserService();
@@ -6,9 +7,9 @@ class UserService {
 
   async findUser(logininfo: any) {
     const { username, password } = logininfo;
-    let res;
+    let res: Model<UserInfoInter> | null;
     try {
-      res = await this.User.findOne({
+      res = (await this.User.findOne({
         where: {
           username,
           password,
@@ -18,12 +19,35 @@ class UserService {
             model: seq.models.Unit,
           },
         ],
-      });
+      })) as Model<UserInfoInter> | null;
       return res;
-    } catch (err) {}
+    } catch (err) {
+      console.error("Find user error:", err);
+      return null;
+    }
   }
   async createUser(userinfo: any) {
     return await this.User.create(userinfo as any);
+  }
+  async updateLastLogin(userId: number) {
+    return await this.User.update(
+      {
+        last_login: new Date(),
+      },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+  }
+  async getLastLogin(userId: number) {
+    return await this.User.findOne({
+      where: {
+        id: userId,
+      },
+      attributes: ["last_login"],
+    });
   }
 }
 

@@ -1,12 +1,14 @@
 import seq from "../db/seq";
+import { Op } from "sequelize";
+
 class RecordService {
   static RecordService: RecordService = new RecordService();
   private Record = seq.models.Record;
   private Problem = seq.models.Problem;
   private People = seq.models.People;
-  private Unit = seq.models.Unit;
+  private RecordDevelopment = seq.models.RecordDevelopment;
   async findRecordsByPersonId(id: number) {
-    return this.Record.findAll({
+    return await this.Record.findAll({
       where: {
         person_id: id,
       },
@@ -38,32 +40,6 @@ class RecordService {
     };
 
     return await this.Record.findAll(query);
-    // return this.People.findAll({
-    //   where: {
-    //     unit_id: id,
-    //   },
-    //   include: [
-    //     { model: this.Unit },
-    //     {
-    //       model: this.Record,
-    //       as: "records",
-    //       include: [
-    //         {
-    //           model: this.Problem,
-    //           as: "problem",
-    //         },
-    //         {
-    //           model: this.People,
-    //           as: "responsible",
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   order: [
-    //     ["records", "problem", "id", "ASC"],
-    //     ["records", "updatedAt", "DESC"],
-    //   ],
-    // });
   }
   async findSolvedRecordsByUnitId(id: number) {
     let whereQuery = undefined;
@@ -87,7 +63,7 @@ class RecordService {
     return await this.Record.findAll(query);
   }
   async createRecord(data: RecordInter) {
-    return this.Record.create({
+    return await this.Record.create({
       // 提取data中的所有属性
       ...data,
       // person_id: data.person_id,
@@ -96,7 +72,7 @@ class RecordService {
     });
   }
   async updateRecord(data: RecordInter) {
-    return this.Record.update(
+    return await this.Record.update(
       {
         ...data,
       },
@@ -108,7 +84,7 @@ class RecordService {
     );
   }
   async findOneRecordById(id: number) {
-    return this.Record.findOne({
+    return await this.Record.findOne({
       where: {
         id,
       },
@@ -116,10 +92,37 @@ class RecordService {
     });
   }
   async destroyRecord(id: number) {
-    return this.Record.destroy({
+    return await this.Record.destroy({
       where: {
         id,
       },
+    });
+  }
+  async updateRecordUpdateDate(record_id: number) {
+    return await this.Record.update(
+      {
+        updated_bar: new Date(),
+      },
+      {
+        where: {
+          id: record_id,
+        },
+      }
+    );
+  }
+  async findRecordsUpdatedAfter(lastLogin: Date) {
+    return await this.Record.findAll({
+      where: {
+        updatedAt: {
+          [Op.gt]: lastLogin,
+        },
+      },
+      include: [
+        { model: this.Problem },
+        { model: this.People },
+        { model: this.RecordDevelopment },
+      ],
+      order: [["updatedAt", "DESC"]],
     });
   }
 }

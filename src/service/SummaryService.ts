@@ -32,7 +32,11 @@ class SummaryService {
           as: "record",
           required: false, // Ensure output even if record is empty
           where: [
-            sequelize.where(seq.fn("MONTH", seq.col("updatedAt")), "<=", month),
+            sequelize.where(
+              seq.fn("MONTH", seq.col("Record.updatedAt")),
+              "<=",
+              month
+            ),
             {
               is_closed: false,
             },
@@ -115,7 +119,11 @@ class SummaryService {
         // 例如，9月完结的record，查询8月的时候应该还作数
         [Op.not]: sequelize.and(
           { is_closed: true },
-          sequelize.where(seq.fn("MONTH", seq.col("updatedAt")), "<=", month)
+          sequelize.where(
+            seq.fn("MONTH", seq.col("Record.updatedAt")),
+            "<=",
+            month
+          )
         ),
       },
       include: [
@@ -124,7 +132,7 @@ class SummaryService {
           limit: 1,
           order: [["updatedAt", "DESC"]],
           where: sequelize.where(
-            seq.fn("MONTH", seq.col("updatedAt")),
+            seq.fn("MONTH", seq.col("RecordDevelopment.updatedAt")),
             "<=",
             month
           ),

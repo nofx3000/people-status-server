@@ -1,5 +1,6 @@
 import RecordService from "../service/RecordService";
 import { SuccessModel, ErrorModel } from "../resmodel/ResModel";
+
 class RecordController {
   static RecordController: RecordController = new RecordController();
   async getRecordByPersonId(id: number) {
@@ -20,7 +21,11 @@ class RecordController {
         return new ErrorModel("getUnsolovedRecordByUnitId not found");
       }
     } catch (error) {
-      return new ErrorModel(error as any);
+      return new ErrorModel(
+        `getUnsolovedRecordByUnitId失败:${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   }
   async getSolovedRecordByUnitId(id: number) {
@@ -32,52 +37,13 @@ class RecordController {
         return new ErrorModel("getSolovedRecordByUnitId not found");
       }
     } catch (error) {
-      return new ErrorModel(error as any);
+      return new ErrorModel(
+        `getSolovedRecordByUnitId失败:${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   }
-
-  // 对record进行去重，每个人只保留最新的一条记录
-  // async getRecordByUnitId(id: number) {
-  //   const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
-  //   const peopleList: PersonInfoInter[] = rawPeopleList.map(
-  //     (raw: any) => raw.dataValues
-  //   );
-  //   if (peopleList) {
-  //     const uniqueRecords = this.removeDuplicateRecords(peopleList);
-  //     return new SuccessModel(uniqueRecords);
-  //   } else {
-  //     return new ErrorModel("not found");
-  //   }
-  // }
-  // 不对record进行去重，每个人只保留最所有记录
-  // async getRecordByUnitIdNofix(id: number) {
-  //   const rawPeopleList: any = await RecordService.findRecordsByUnitId(id);
-  //   const peopleList: PersonInfoInter[] = rawPeopleList.map(
-  //     (raw: any) => raw.dataValues
-  //   );
-  //   if (peopleList) {
-  //     return new SuccessModel(peopleList);
-  //   } else {
-  //     return new ErrorModel("not found");
-  //   }
-  // }
-
-  // 对menuList进行调整，如果每个person中的record具有多个相同problem的记录，则每个problem只保留一条记录
-  // private removeDuplicateRecords(people: PersonInfoInter[]) {
-  //   for (const person of people) {
-  //     const uniqueRecords: PersonInfoInter[] = [];
-  //     const uniqueProblems: Set<string> = new Set();
-  //     // records数组已经是时间降序
-  //     person.records?.forEach((record: RecordInter) => {
-  //       if (!uniqueProblems.has((record as any).problem_id)) {
-  //         uniqueRecords.push(record);
-  //         uniqueProblems.add((record as any).problem_id);
-  //       }
-  //     });
-  //     person.records = uniqueRecords;
-  //   }
-  //   return people;
-  // }
 
   async getRecordId(id: number) {
     const record = await RecordService.findOneRecordById(id);
@@ -95,7 +61,11 @@ class RecordController {
     }
     try {
     } catch (error) {
-      return new ErrorModel("添加record失败");
+      return new ErrorModel(
+        `添加record失败:${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   }
   async editRecord(data: RecordInter) {
@@ -105,7 +75,9 @@ class RecordController {
         return new SuccessModel(result);
       }
     } catch (error) {
-      return new ErrorModel("修改记录失败");
+      return new ErrorModel(
+        `修改记录失败:${error instanceof Error ? error.message : String(error)}`
+      );
     }
   }
   async deleteRecord(id: number) {
@@ -115,7 +87,24 @@ class RecordController {
         return new SuccessModel(result);
       }
     } catch (error) {
-      return new ErrorModel("删除记录失败");
+      return new ErrorModel(
+        `deleteRecord失败:${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
+    }
+  }
+
+  async getRecordsUpdatedAfter(lastLogin: Date) {
+    try {
+      const records = await RecordService.findRecordsUpdatedAfter(lastLogin);
+      return new SuccessModel(records);
+    } catch (error) {
+      return new ErrorModel(
+        `getRecordsUpdatedAfter失败:${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
     }
   }
 }

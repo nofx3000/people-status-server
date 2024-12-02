@@ -5,6 +5,29 @@ import { SECRET_KEY } from "../conf/jwt";
 
 class UserController {
   static UserController: UserController = new UserController();
+
+  async updateUserLastLogin(userId: number) {
+    try {
+      const res = await UserService.updateLastLogin(userId);
+      return new SuccessModel(res);
+    } catch (error) {
+      console.error("Failed to update last login time:", error);
+      throw error;
+    }
+  }
+
+  async getUserLastLogin(userId: number) {
+    try {
+      const lastLogin = await UserService.getLastLogin(userId);
+      return lastLogin
+        ? new SuccessModel(lastLogin.dataValues.last_login)
+        : new ErrorModel("获取上次登录时间失败");
+    } catch (error) {
+      console.error("Failed to get last login time:", error);
+      return new ErrorModel("获取上次登录时间失败");
+    }
+  }
+
   async login(logininfo: any) {
     try {
       let userinfo = await UserService.findUser(logininfo);
@@ -34,8 +57,6 @@ class UserController {
   async verify(token: string) {
     try {
       const decode = jwt.verify(token.split(" ")[1], SECRET_KEY);
-
-      console.log("__________-------------__________", decode);
 
       return new SuccessModel(decode);
     } catch (error) {

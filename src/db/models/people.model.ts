@@ -5,13 +5,14 @@ import {
   BelongsTo,
   ForeignKey,
   HasMany,
+  DataType,
 } from "sequelize-typescript";
 import Unit from "./unit.model";
 import Record from "./record.model";
 import Responsible from "./responsible.model";
 
 @Table({
-  timestamps: false,
+  timestamps: true,
 })
 export default class People extends Model {
   @Column({
@@ -46,4 +47,18 @@ export default class People extends Model {
 
   @BelongsTo(() => Responsible)
   responsible!: Responsible;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  createdAt!: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+    defaultValue: DataType.NOW,
+  })
+  updatedAt!: Date;
 }

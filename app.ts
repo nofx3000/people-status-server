@@ -22,6 +22,7 @@ import unit from "./src/routes/unit";
 import summary from "./src/routes/summary";
 import responsible from "./src/routes/responsible";
 import record_development from "./src/routes/record_development";
+import llm from "./src/routes/llm";
 
 // app.use(
 //   jwtKoa({
@@ -42,11 +43,11 @@ import record_development from "./src/routes/record_development";
 // middlewares
 app.use(
   cors({
-    origin: function (ctx) {
-      return "*";
-    },
-    maxAge: 5,
+    origin: "*",
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    headers: ["Content-Type", "Authorization", "Accept"],
+    maxAge: 86400,
   })
 );
 
@@ -90,6 +91,8 @@ app.use(responsible.routes());
 app.use(responsible.allowedMethods());
 app.use(record_development.routes());
 app.use(record_development.allowedMethods());
+app.use(llm.routes());
+app.use(llm.allowedMethods());
 
 // error-handling
 app.on("error", (err: Error, ctx: Context) => {

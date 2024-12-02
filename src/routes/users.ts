@@ -35,4 +35,22 @@ router.post("/create", jwtCheck, async (ctx: Context) => {
   ctx.body = await UserController.createUser(userinfo);
 });
 
+// 获取用户最后登录时间
+router.get("/last-login/:userId", async (ctx: Context) => {
+  const userId = parseInt(ctx.params.userId);
+  const res = await UserController.getUserLastLogin(userId);
+  ctx.body = res;
+});
+
+// 手动更新用户最后登录时间
+router.put("/last-login/:userId", async (ctx: Context) => {
+  try {
+    const userId = parseInt(ctx.params.userId);
+    const res = await UserController.updateUserLastLogin(userId);
+    ctx.body = res;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default router;

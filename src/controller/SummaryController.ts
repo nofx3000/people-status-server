@@ -15,7 +15,6 @@ class SummaryController {
           unitId,
           new Date().getMonth()
         );
-
       return new SuccessModel({
         thisMonth: thisMonthproblemList,
         lastMonth: lastMonthproblemList,

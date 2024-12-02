@@ -4,6 +4,7 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
+  DataType,
 } from "sequelize-typescript";
 import Unit from "./unit.model";
 
@@ -32,4 +33,10 @@ export default class User extends Model {
     defaultValue: "user",
   })
   role!: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  last_login!: Date;
 }

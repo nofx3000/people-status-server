@@ -9,5 +9,7 @@ export const MYSQL_CONF: SequelizeOptions = {
   database: "people_status",
   dialect: "mysql",
   dialectModule: mysql2,
+  logging: false,
+  timezone: "+08:00",
   // models: [path.join(__dirname, "..", "/db/models/*.model.ts")],
 };

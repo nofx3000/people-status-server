@@ -35,4 +35,8 @@ export default class Record extends Model {
     defaultValue: false,
   })
   is_closed!: boolean;
+
+  // 无法直接修改updatedAt，每次修改updated_bar带动updatedAt更新
+  @Column
+  updated_bar!: Date;
 }

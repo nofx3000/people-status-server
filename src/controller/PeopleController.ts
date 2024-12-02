@@ -6,17 +6,7 @@ class PeopleController {
   static PeopleController: PeopleController = new PeopleController();
   async getPeopleInfoByUnit(unitId: string): Promise<BaseModel> {
     try {
-      // if (unitId == "0") {
-      //   const peopleInfoByUnit = await PeopleService.find
-      // } else {
-      //   const peopleInfoByUnit = await UnitService.findPeopleByUnit(unitId);
-      //   return new SuccessModel(peopleInfoByUnit[0].dataValues.people);
-      // }
       const peopleRecords = await PeopleService.findPeopleByUnitId(unitId);
-      console.log(
-        "peopleInfoByUnit",
-        peopleRecords.map((item) => item.dataValues)
-      );
       const separatedPeopleRecords = this.separatePeopleRecords(peopleRecords);
       return new SuccessModel(separatedPeopleRecords);
     } catch (error) {
@@ -70,6 +60,17 @@ class PeopleController {
     try {
       const res = await PeopleService.findPersonById(id);
       return new SuccessModel(res);
+    } catch (error) {
+      return new ErrorModel((error as any).toString());
+    }
+  }
+
+  async getPeopleUpdatedAfter(lastLogin: Date): Promise<BaseModel> {
+    try {
+      const peopleRecords = await PeopleService.findPeopleUpdatedAfter(
+        lastLogin
+      );
+      return new SuccessModel(peopleRecords);
     } catch (error) {
       return new ErrorModel((error as any).toString());
     }
