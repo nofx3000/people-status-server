@@ -13,7 +13,7 @@ const _debug = debug("demo:server");
  * Get port from environment and store in Express.
  */
 
-var port: any = normalizePort(process.env.PORT || "3000");
+var port: any = normalizePort(process.env.PORT || "3001");
 // app.set('port', port);
 
 /**
