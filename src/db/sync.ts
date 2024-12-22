@@ -11,7 +11,7 @@ seq
   });
 
 // 执行同步
-seq.sync({ alter: true }).then(() => {
+seq.sync({ force: true }).then(() => {
   console.log("sync ok");
   process.exit();
 });

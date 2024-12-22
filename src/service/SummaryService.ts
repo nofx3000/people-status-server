@@ -33,7 +33,7 @@ class SummaryService {
           required: false, // Ensure output even if record is empty
           where: [
             sequelize.where(
-              seq.fn("MONTH", seq.col("Record.updatedAt")),
+              seq.fn("MONTH", seq.col("record.updatedAt")),
               "<=",
               month
             ),

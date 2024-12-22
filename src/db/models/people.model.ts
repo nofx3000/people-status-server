@@ -6,6 +6,7 @@ import {
   ForeignKey,
   HasMany,
   DataType,
+  Sequelize,
 } from "sequelize-typescript";
 import Unit from "./unit.model";
 import Record from "./record.model";
@@ -51,14 +52,14 @@ export default class People extends Model {
   @Column({
     type: DataType.DATE,
     allowNull: false,
-    defaultValue: DataType.NOW,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   createdAt!: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
-    defaultValue: DataType.NOW,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   updatedAt!: Date;
 }

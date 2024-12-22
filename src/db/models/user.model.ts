@@ -10,6 +10,7 @@ import Unit from "./unit.model";
 
 @Table({
   timestamps: false,
+  // tableName: 'users'
 })
 export default class User extends Model {
   @Column({
