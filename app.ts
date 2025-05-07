@@ -44,9 +44,9 @@ import llm from "./src/routes/llm";
 app.use(
   cors({
     origin: "*",
-    credentials: true,
+    // credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    headers: ["Content-Type", "Authorization", "Accept"],
+    headers: ["Content-Type", "Authorization", "Accept", "X-Requested-With" ],
     maxAge: 86400,
   })
 );

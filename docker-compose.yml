@@ -22,6 +22,7 @@ services:
       - ollama
     volumes:
       - ./src/:/app/src/
+      - ./app.ts:/app/app.ts
 
   mysql:
     image: mysql:8.0
