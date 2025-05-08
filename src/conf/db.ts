@@ -3,11 +3,11 @@ import mysql2 from "mysql2";
 
 export const MYSQL_CONF: SequelizeOptions = {
   // dev
-  // host: "127.0.0.1",
+  host: "127.0.0.1",
   // docker 2 host
   // host:'host.docker.internal',
   // docker
-  host: "mysql",
+  // host: "mysql",
   username: "root",
   password: "root",
   port: 3306,
