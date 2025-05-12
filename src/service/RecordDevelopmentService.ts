@@ -2,11 +2,31 @@ import seq from "../db/seq";
 
 class RecordDevelopmentService {
   static RecordDevelopmentService: RecordDevelopmentService =
-    new RecordDevelopmentService();
+  new RecordDevelopmentService();
+  private People = seq.models.People;
+  private Record = seq.models.Record;
   private RecordDevelopment = seq.models.RecordDevelopment;
 
   async createRecordDevelopment(data: RecordDevelopmentInter) {
     const res = await this.RecordDevelopment.create(data as any);
+    return res;
+  }
+
+  async getTopSixRecordDevelopments() {
+    const res = await this.RecordDevelopment.findAll({
+      order: [["updatedAt", "DESC"]],
+      limit: 6,
+      include: [
+        {
+          model: this.Record,
+          include: [
+            {
+              model: this.People,
+            },
+          ],
+        },
+      ],
+    });
     return res;
   }
 

@@ -26,6 +26,16 @@ class RecordDevelopmentController {
     }
   }
 
+  async getTopSixRecordDevelopments() {
+    try {
+      const res = await RecordDevelopmentService.getTopSixRecordDevelopments();
+      return new SuccessModel(res);
+    } catch (error) {
+      console.error("获取TopSixRecordDevelopments失败:", error);
+      return new ErrorModel("获取TopSixRecordDevelopments失败");
+    }
+  }
+
   async editRecordDevelopment(id: number, data: RecordDevelopmentInter) {
     try {
       const result = await RecordDevelopmentService.updateRecordDevelopment(

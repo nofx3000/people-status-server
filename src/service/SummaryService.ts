@@ -118,30 +118,66 @@ class SummaryService {
         // 排除month之前已完结的record
         // 例如，9月完结的record，查询8月的时候应该还作数
         // 换一种说法，就是排除掉当前月份之前的所有完结的record
-        [Op.not]: sequelize.and(
-          { is_closed: true },
-          sequelize.where(
-            seq.fn("MONTH", seq.col("Record.updatedAt")),
-            "<=",
-            month
-          ),
-          sequelize.where(
-            seq.fn("YEAR", seq.col("Record.updatedAt")),
-            "<=",
-            new Date().getFullYear()
-          ),
-        ),
+        [Op.or]: [
+          {
+            [Op.and]: [
+              { is_closed: false },
+              sequelize.where(
+                seq.fn("YEAR", seq.col("Record.updatedAt")),
+                "=",
+                new Date().getFullYear()
+              ),
+              sequelize.where(
+                seq.fn("MONTH", seq.col("Record.updatedAt")),
+                "<=",
+                month
+              )
+            ]
+          },
+          {
+            [Op.and]: [
+              { is_closed: false },
+              sequelize.where(
+                seq.fn("YEAR", seq.col("Record.updatedAt")),
+                "<",
+                new Date().getFullYear()
+              )
+            ]
+          }
+        ]
       },
       include: [
         {
           model: this.RecordDevelopment,
           limit: 1,
           order: [["updatedAt", "DESC"]],
-          where: sequelize.where(
-            seq.fn("MONTH", seq.col("RecordDevelopment.updatedAt")),
-            "<=",
-            month
-          ),
+          where: {
+            [Op.or]: [
+              {
+                [Op.and]: [
+                  sequelize.where(
+                    seq.fn("YEAR", seq.col("RecordDevelopment.updatedAt")),
+                    "=",
+                    new Date().getFullYear()
+                  ),
+                  sequelize.where(
+                    seq.fn("MONTH", seq.col("RecordDevelopment.updatedAt")),
+                    "<=",
+                    month
+                  )
+                ]
+              },
+              {
+                [Op.and]: [
+                  sequelize.where(
+                    seq.fn("YEAR", seq.col("RecordDevelopment.updatedAt")),
+                    "<",
+                    new Date().getFullYear()
+                  )
+                ]
+              }
+            ]
+          }
         },
         {
           model: this.People,

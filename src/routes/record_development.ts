@@ -11,6 +11,11 @@ router.post("/", async (ctx: Context) => {
   ctx.body = res;
 });
 
+router.get("/", async (ctx: Context) => {
+  const res = await RecordDevelopmentController.getTopSixRecordDevelopments();
+  ctx.body = res;
+});
+
 router.put("/:id", async (ctx: Context) => {
   const data: RecordDevelopmentInter = ctx.request.body as any;
   const res = await RecordDevelopmentController.editRecordDevelopment(
